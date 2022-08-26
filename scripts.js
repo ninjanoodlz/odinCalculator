@@ -1,18 +1,27 @@
 /** Javascript! */
 
 //Event Listeners for buttons
-let nine = document.querySelector('#nine');
-nine.addEventListener("click", function(){
-    clearDisplay();
-    updateDisplay(9);
-});
+// let nine = document.querySelector('#nine');
+// nine.addEventListener("click", function(){
+//     clearDisplay();
+//     updateDisplay(9);
+// });
 
-let clear = document.querySelector('#clear');
-clear.addEventListener("click", function(){
-    clearDisplay();
-});
+// let clear = document.querySelector('#clear');
+// clear.addEventListener("click", function(){
+//     clearDisplay();
+// });
 
+let allButtons = document.querySelector("#clickers");
+allButtons.addEventListener("click", buttonListener, false);
 
+function buttonListener(e) {
+    if (e.target !== e.currentTarget){
+        let clickItem = e.target.id;
+        updateDisplay(clickItem);
+    }
+    e.stopPropagation();
+}
 
 //update display function
 function updateDisplay(newValue) {
