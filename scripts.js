@@ -1,13 +1,36 @@
 /** Javascript! */
 
-//canvas test
+//Event Listeners for buttons
+let nine = document.querySelector('#nine');
+nine.addEventListener("click", function(){
+    clearDisplay();
+    updateDisplay(9);
+});
 
-let canvas = document.getElementById("display");
-let ctx = canvas.getContext("2d");
-ctx.fillText("Hello Michael", 100, 50);
+let clear = document.querySelector('#clear');
+clear.addEventListener("click", function(){
+    clearDisplay();
+});
 
-//static test good
 
+
+//update display function
+function updateDisplay(newValue) {
+    let canvas = document.getElementById("display");
+    let ctx = canvas.getContext("2d");
+    ctx.font = "30px Arial";
+    ctx.fillText(newValue, 100, 50);
+}
+
+function clearDisplay() {
+    let canvas = document.getElementById("display");
+    let ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+
+
+//basic math functions start
 function add(num1, num2) {
     return num1 + num2;
 }
@@ -24,6 +47,7 @@ function divide (num1, num2) {
     return num1 / num2;
 }
 
+//consolidates math operators and number inputs
 function operate (operator, num1, num2) {
     if(operator === "add") {
         add(num1, num2);
