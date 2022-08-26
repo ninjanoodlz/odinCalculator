@@ -7,6 +7,10 @@ h1 {
     flex-direction: column;
 }
 
+div {
+    align-items: center;
+}
+
 #display {
     margin-bottom: 10px;
     background-color: #A7C4CB
@@ -16,11 +20,6 @@ canvas {
     border-style: solid; padding:2px 4px;
     border-radius: 5px;
     margin: auto;
-}
-
-#row1, #row2, #row3, #row4, #functions {
-    display: flex;
-    justify-content: center;
 }
 
 button {

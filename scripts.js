@@ -1,23 +1,26 @@
 /** Javascript! */
 
-//Event Listeners for buttons
-// let nine = document.querySelector('#nine');
-// nine.addEventListener("click", function(){
-//     clearDisplay();
-//     updateDisplay(9);
-// });
+//Global variables
+let displayValue = null;
 
-// let clear = document.querySelector('#clear');
-// clear.addEventListener("click", function(){
-//     clearDisplay();
-// });
+//Event Listeners for buttons
 
 let allButtons = document.querySelector("#clickers");
 allButtons.addEventListener("click", buttonListener, false);
 
 function buttonListener(e) {
-    if (e.target !== e.currentTarget){
+    if(e.target.id === "reset"){
+        reset();
+    }
+    else if(e.target !== e.currentTarget){
         let clickItem = e.target.id;
+        clearDisplay();
+
+        // pseudocode
+        // I need this block to take target id(s)
+        // and give the operate function proper arguments
+        // displayValue = operate(plus, 2, 2) 
+
         updateDisplay(clickItem);
     }
     e.stopPropagation();
@@ -25,10 +28,16 @@ function buttonListener(e) {
 
 //update display function
 function updateDisplay(newValue) {
+    if(displayValue === null){
+        displayValue = newValue;
+    }
+    else{
+        displayValue += newValue;
+    }
     let canvas = document.getElementById("display");
     let ctx = canvas.getContext("2d");
     ctx.font = "30px Arial";
-    ctx.fillText(newValue, 100, 50);
+    ctx.fillText(displayValue, 0, 25);
 }
 
 function clearDisplay() {
@@ -37,7 +46,10 @@ function clearDisplay() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-
+function reset() {
+    displayValue = null;
+    clearDisplay();
+}
 
 //basic math functions start
 function add(num1, num2) {
@@ -74,3 +86,22 @@ function operate (operator, num1, num2) {
         console.log("error");
     }
 }
+
+
+
+
+
+
+
+
+
+// let nine = document.querySelector('#nine');
+// nine.addEventListener("click", function(){
+//     clearDisplay();
+//     updateDisplay(9);
+// });
+
+// let clear = document.querySelector('#clear');
+// clear.addEventListener("click", function(){
+//     clearDisplay();
+// });
