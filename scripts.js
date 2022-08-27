@@ -2,6 +2,8 @@
 
 //Global variables
 let displayValue = null;
+let storedValue = null;
+let operator = null;
 
 //Event Listeners for buttons
 
@@ -9,26 +11,44 @@ let allButtons = document.querySelector("#clickers");
 allButtons.addEventListener("click", buttonListener, false);
 
 function buttonListener(e) {
-    if(e.target.id === "reset"){
-        reset();
+    if(e.target.id === "AC") {
+        AC();
     }
-    else if(e.target !== e.currentTarget){
-        let clickItem = e.target.id;
+    else if(e.target.id === "add") {
+        if(storedValue === null) {
+            storedValue = displayValue;
+            operator = "add"; 
+            reset();
+        }
+        else {
+        storedValue = add(displayValue, storedValue);
+        operator = "add";
+        reset();
+        }
+    }
+    else if(e.target.id === "solve") {
+        storedValue = operate(operator, displayValue, storedValue);
         clearDisplay();
-
-        // pseudocode
-        // I need this block to take target id(s)
-        // and give the operate function proper arguments
-        // displayValue = operate(plus, 2, 2) 
-
+        operator = "solved";
+        solutionDisplay(storedValue);
+        console.log({storedValue});
+        console.log({displayValue});
+        console.log({operator});
+    }
+    else if(e.target !== e.currentTarget) {
+        let clickItem = e.target.id;
+        if(operator === "solved") {
+            afterAnswer();
+        }
+        clearDisplay();
         updateDisplay(clickItem);
     }
     e.stopPropagation();
 }
 
-//update display function
+//update numbers displayed
 function updateDisplay(newValue) {
-    if(displayValue === null){
+    if(displayValue === null) {
         displayValue = newValue;
     }
     else{
@@ -40,6 +60,13 @@ function updateDisplay(newValue) {
     ctx.fillText(displayValue, 0, 25);
 }
 
+function solutionDisplay(answer) {
+    let canvas = document.getElementById("display");
+    let ctx = canvas.getContext("2d");
+    ctx.font = "30px Arial";
+    ctx.fillText(answer, 0, 25);
+}
+
 function clearDisplay() {
     let canvas = document.getElementById("display");
     let ctx = canvas.getContext('2d');
@@ -49,7 +76,30 @@ function clearDisplay() {
 function reset() {
     displayValue = null;
     clearDisplay();
+    console.log({storedValue});
+    console.log({displayValue});
+    console.log({operator});
 }
+
+function AC() {
+    displayValue = null;
+    storedValue = null;
+    operator = null;
+    clearDisplay();
+    console.log({storedValue});
+    console.log({displayValue});
+    console.log({operator});
+}
+
+//resets variables after answers
+function afterAnswer() {
+    // clearDisplay();
+    displayValue = null;
+    storedValue = null;
+    operator = null;
+}
+
+
 
 //basic math functions start
 function add(num1, num2) {
@@ -69,39 +119,20 @@ function divide (num1, num2) {
 }
 
 //consolidates math operators and number inputs
-function operate (operator, num1, num2) {
-    if(operator === "add") {
-        add(num1, num2);
+function operate (arg, num1, num2) {
+    if(arg === "add") {
+        return add(num1, num2);
     }
-    else if(operator === "subtract") {
-        subtract(num1, num2);
+    else if(arg === "subtract") {
+        return subtract(num1, num2);
     }
-    else if(operator === "multiply") {
-        multiply(num1, num2);
+    else if(arg === "multiply") {
+        return multiply(num1, num2);
     }
-    else if(operator === "divide") {
-        divide(num1, num2);
+    else if(arg === "divide") {
+        return (num1, num2);
     }
     else {
         console.log("error");
     }
 }
-
-
-
-
-
-
-
-
-
-// let nine = document.querySelector('#nine');
-// nine.addEventListener("click", function(){
-//     clearDisplay();
-//     updateDisplay(9);
-// });
-
-// let clear = document.querySelector('#clear');
-// clear.addEventListener("click", function(){
-//     clearDisplay();
-// });
