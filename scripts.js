@@ -3,7 +3,7 @@
 //Global variables
 let displayValue = null;
 let storedValue = null;
-let operator = false;
+let operator = solve;
 
 //Event Listeners for buttons
 
@@ -14,45 +14,117 @@ function buttonListener(e) {
     if(e.target.id === "AC") {
         AC();
     }
+    else if(e.target.id === operator) {
+        //do nothing
+    }
     else if(e.target.id === "add") {
+        document.getElementById(".").disabled = false; //reenable .
         if(storedValue === null) {
-            storedValue = displayValue;
             operator = "add";
+            storedValue = displayValue;
+            displayValue = null;
+        }
+        else if (operator === "solve") {
+            operator = "add";
+        }
+        else if (operator !== "add" && operator !== "solve") {
+            storedValue = operate(operator, storedValue, displayValue);
             reset();
+            solutionDisplay(storedValue);
+            operator = "add";
+        }
+        else if(storedValue !== null) {
+            operator = "add";
+            storedValue = operate(operator, storedValue, displayValue);
+            reset();
+            solutionDisplay(storedValue);
+        }
+    }
+    //subtraction
+    else if(e.target.id === "subtract") {
+        document.getElementById(".").disabled = false; //reenable .
+        if(storedValue === null) {
+            operator = "subtract";
+            storedValue = displayValue;
+            displayValue = null;
+        }
+        else if (operator === "solve") {
+            operator = "subtract";
+        }
+        else if (operator !== "subtract" && operator !== "solve") {
+            storedValue = operate(operator, storedValue, displayValue);
+            reset();
+            solutionDisplay(storedValue);
+            operator = "subtract";
+        }
+        else if(storedValue !== null) {
+            operator = "subtract";
+            storedValue = operate(operator, storedValue, displayValue);
+            reset();
+            solutionDisplay(storedValue);
+        }  
+    }
+    //multiplication
+    else if(e.target.id === "multiply") {
+        document.getElementById(".").disabled = false; //reenable .
+        if(storedValue === null) {
+            operator = "multiply";
+            storedValue = displayValue;
+            displayValue = null;
+        }
+        else if (operator === "solve") {
+            operator = "multiply";
+        }
+        else if (operator !== "multiply" && operator !== "solve") {
+            storedValue = operate(operator, storedValue, displayValue);
+            reset();
+            solutionDisplay(storedValue);
+            operator = "multiply";
             console.log(1);
         }
-        else if (operator === "solved") {
-            storedValue = displayValue;
-            storedValue = add(displayValue, storedValue); 
-            operator = "add";
+        else if(storedValue !== null) {
+            operator = "multiply";
+            storedValue = operate(operator, storedValue, displayValue);
             reset();
-            console.log(2);
-        }
-        else {
-        storedValue = add(displayValue, storedValue); 
-        operator = "add";
-        reset();
-        console.log(3);
-        }
+            solutionDisplay(storedValue);
+        }  
     }
-    else if (e.target.id === "subtract") {
+    //divide
+    else if(e.target.id === "divide") {
+        document.getElementById(".").disabled = false; //reenable .
         if(storedValue === null) {
+            operator = "divide";
             storedValue = displayValue;
-            operator = "subtract"
+            displayValue = null;
         }
-        else {
-            storedValue =subtract(displayValue, storedValue);
-            operator = "subtract";
+        else if (operator === "solve") {
+            operator = "divide";
+        }
+        else if (operator !== "divide" && operator !== "solve") {
+            storedValue = operate(operator, storedValue, displayValue);
             reset();
+            solutionDisplay(storedValue);
+            operator = "divide";
         }
+        else if(storedValue !== null) {
+            operator = "divide";
+            storedValue = operate(operator, storedValue, displayValue);
+            reset();
+            solutionDisplay(storedValue);
+        }  
     }
-    else if(e.target.id === "solve" && operator != "solved") {
-        storedValue = operate(operator, displayValue, storedValue);
-        clearDisplay();
-        operator = "solved";
+    //solve!
+    else if(e.target.id === "solve") {
+        storedValue = operate(operator, storedValue, displayValue);
+        reset();
         solutionDisplay(storedValue);
+        operator = "solve";
     }
+    //display update
     else if(e.target !== e.currentTarget) {
+        if(operator == "solve") {
+            storedValue = null;
+        }
         clearDisplay();
         let clickItem = e.target.id;
         updateDisplay(clickItem);
@@ -67,13 +139,16 @@ function updateDisplay(newValue) {
     }
     else{
         displayValue += newValue;
+        if(newValue === "." ) {
+            document.getElementById(".").disabled = true;
+        }
     }
     let canvas = document.getElementById("display");
     let ctx = canvas.getContext("2d");
     ctx.font = "30px Arial";
     ctx.fillText(displayValue, 0, 25);
-    ctx.fillText(storedValue, 200, 25);
-    ctx.fillText(operator, 200, 75);
+    // ctx.fillText(storedValue, 200, 25);
+    // ctx.fillText(operator, 200, 75);
 }
 
 function solutionDisplay(answer) {
@@ -81,6 +156,8 @@ function solutionDisplay(answer) {
     let ctx = canvas.getContext("2d");
     ctx.font = "30px Arial";
     ctx.fillText(answer, 0, 25);
+    // ctx.fillText(storedValue, 200, 25);
+    // ctx.fillText(operator, 200, 75);
 }
 
 function clearDisplay() {
@@ -92,26 +169,15 @@ function clearDisplay() {
 function reset() {
     displayValue = null;
     clearDisplay();
-    console.log({storedValue});
-    console.log({displayValue});
-    console.log({operator});
+    document.getElementById(".").disabled = false;
 }
 
 function AC() {
     displayValue = null;
     storedValue = null;
-    operator = null;
+    operator = solve;
     clearDisplay();
 }
-
-//resets variables after answers
-function afterAnswer() {
-    displayValue = null;
-    // storedValue = null;
-    // operator = null;
-}
-
-
 
 //basic math functions start
 function add(num1, num2) {
@@ -133,15 +199,19 @@ function divide (num1, num2) {
 //consolidates math operators and number inputs
 function operate (arg, num1, num2) {
     if(arg === "add") {
+        console.log(`${num1} + ${num2}`);
         return add(num1, num2);
     }
     else if(arg === "subtract") {
+        console.log(`${num1} - ${num2}`);
         return subtract(num1, num2);
     }
     else if(arg === "multiply") {
+        console.log(`${num1} * ${num2}`);
         return multiply(num1, num2);
     }
     else if(arg === "divide") {
+        console.log(`${num1} / ${num2}`);
         return divide(num1, num2);
     }
     else {
