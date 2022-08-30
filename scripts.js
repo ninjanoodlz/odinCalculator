@@ -3,7 +3,7 @@
 //Global variables
 let displayValue = null;
 let storedValue = null;
-let operator = null;
+let operator = false;
 
 //Event Listeners for buttons
 
@@ -17,30 +17,44 @@ function buttonListener(e) {
     else if(e.target.id === "add") {
         if(storedValue === null) {
             storedValue = displayValue;
-            operator = "add"; 
+            operator = "add";
             reset();
+            console.log(1);
+        }
+        else if (operator === "solved") {
+            storedValue = displayValue;
+            storedValue = add(displayValue, storedValue); 
+            operator = "add";
+            reset();
+            console.log(2);
         }
         else {
-        storedValue = add(displayValue, storedValue);
+        storedValue = add(displayValue, storedValue); 
         operator = "add";
         reset();
+        console.log(3);
         }
     }
-    else if(e.target.id === "solve") {
+    else if (e.target.id === "subtract") {
+        if(storedValue === null) {
+            storedValue = displayValue;
+            operator = "subtract"
+        }
+        else {
+            storedValue =subtract(displayValue, storedValue);
+            operator = "subtract";
+            reset();
+        }
+    }
+    else if(e.target.id === "solve" && operator != "solved") {
         storedValue = operate(operator, displayValue, storedValue);
         clearDisplay();
         operator = "solved";
         solutionDisplay(storedValue);
-        console.log({storedValue});
-        console.log({displayValue});
-        console.log({operator});
     }
     else if(e.target !== e.currentTarget) {
-        let clickItem = e.target.id;
-        if(operator === "solved") {
-            afterAnswer();
-        }
         clearDisplay();
+        let clickItem = e.target.id;
         updateDisplay(clickItem);
     }
     e.stopPropagation();
@@ -58,6 +72,8 @@ function updateDisplay(newValue) {
     let ctx = canvas.getContext("2d");
     ctx.font = "30px Arial";
     ctx.fillText(displayValue, 0, 25);
+    ctx.fillText(storedValue, 200, 25);
+    ctx.fillText(operator, 200, 75);
 }
 
 function solutionDisplay(answer) {
@@ -86,36 +102,32 @@ function AC() {
     storedValue = null;
     operator = null;
     clearDisplay();
-    console.log({storedValue});
-    console.log({displayValue});
-    console.log({operator});
 }
 
 //resets variables after answers
 function afterAnswer() {
-    // clearDisplay();
     displayValue = null;
-    storedValue = null;
-    operator = null;
+    // storedValue = null;
+    // operator = null;
 }
 
 
 
 //basic math functions start
 function add(num1, num2) {
-    return num1 + num2;
+    return Number(num1) + Number(num2);
 }
 
 function subtract(num1, num2) {
-    return num1 - num2;
+    return Number(num1) - Number(num2);
 }
 
 function multiply (num1, num2) {
-    return num1 * num2;
+    return Number(num1) * Number(num2);
 }
 
 function divide (num1, num2) {
-    return num1 / num2;
+    return Number(num1) / Number(num2);
 }
 
 //consolidates math operators and number inputs
@@ -130,7 +142,7 @@ function operate (arg, num1, num2) {
         return multiply(num1, num2);
     }
     else if(arg === "divide") {
-        return (num1, num2);
+        return divide(num1, num2);
     }
     else {
         console.log("error");
