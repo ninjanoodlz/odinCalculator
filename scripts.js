@@ -17,6 +17,9 @@ function buttonListener(e) {
     else if(e.target.id === operator) {
         //do nothing
     }
+    else if(e.target.id === "solve" && storedValue === null) {
+        //do nothing
+    }
     else if(e.target.id === "add") {
         document.getElementById(".").disabled = false; //reenable .
         if(storedValue === null) {
